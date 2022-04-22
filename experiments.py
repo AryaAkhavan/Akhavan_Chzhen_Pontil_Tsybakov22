@@ -17,18 +17,30 @@ def func_l1_test(x):
     return np.linalg.norm(x - softmax(np.arange(d)), ord=1)
 
 
+def func_l1_corner_test(x):
+    d = len(x)
+    center = np.zeros(d)
+    center[0] = 1
+    return np.linalg.norm(x - center, ord=1)
+
+
+def func_l1_center_test(x):
+    d = len(x)
+    center = np.ones(d) / d
+    return np.linalg.norm(x - center, ord=1)
+
 
 if __name__ == '__main__':
-    dim = 3
-    max_iter = 15000
-    objective = func_l2_test
-    radius = 1
-    norm_str_conv = 2
-    constr_type = 2
-    norm_lipsch = 2
+    dim = 500
+    max_iter = 10000
+    objective = func_l1_corner_test
+    radius = np.sqrt(np.log(dim))
+    norm_str_conv = 1
+    constr_type = 'simplex'
+    norm_lipsch = 1
     to_plot = True
-    sigma = 1
-    objective_min = 0
+    sigma = 0
+    objective_min = 0.
 
 
     setup_estimator = {
@@ -62,11 +74,15 @@ if __name__ == '__main__':
     print(f"Spherical method finished in: {(end - start):.2f}sec")
 
     if to_plot:
-        plt.plot(np.arange(max_iter) + 1, report_l1, label='Our')
-        plt.plot(np.arange(max_iter) + 1, report_l2, label='Spherical')
-        plt.axhline(y=objective_min, color='r', linestyle='-.')
+        plt.plot(np.arange(max_iter)+1, np.array(report_l1)-objective_min,
+                 label='Our')
+        plt.plot(np.arange(max_iter)+1, np.array(report_l2)-objective_min,
+                 label='Spherical')
+        plt.axhline(y=0, color='b', linestyle='-.')
         plt.xlabel('Number of iterations')
-        plt.ylabel('Objective function')
+        plt.ylabel('Optimization error')
+        plt.yscale('log')
+        plt.xscale('log')
         plt.title(f"Constraint type: {constr_type}, dimension: {dim}")
         plt.legend()
         plt.show()
