@@ -2,6 +2,28 @@ import numpy as np
 from helpers import softmax
 
 
+class FuncL2Test():
+    def __init__(self, center=None, dim=5):
+        self.dim = dim
+        if center is None:
+            self.center = np.ones(dim) / (4 * np.sqrt(dim))
+        else:
+            self.center = center
+        self.min__ = None
+
+
+    def get_min(self):
+        if self.min is not None:
+            self.min = 0
+            return self.min
+        else:
+            return self.min__
+
+
+    def eval(x):
+        return np.linalg.norm(x - self.center) ** 2
+
+
 def func_l2_test(x):
     d = len(x)
     center = np.ones(d) / (4 * np.sqrt(d))
