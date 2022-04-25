@@ -3,7 +3,7 @@ from helpers import softmax
 
 
 class FuncL2Test():
-    def __init__(self, center=None, dim=5):
+    def __init__(self, dim=5, center=None):
         self.dim = dim
         if center is None:
             self.center = np.ones(dim) / (4 * np.sqrt(dim))
