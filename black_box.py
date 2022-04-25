@@ -6,7 +6,8 @@ from helpers import softmax, mirror_projection, norm_dual
 
 class BlackBox:
     def __init__(self, estimator, objective,
-                 online=False, verbose=1, sigma=0):
+                 online=False, verbose=1, sigma=0,
+                 noise_family='Gaussian'):
         """Black box with mirror descent optimizer
 
         Parameters
@@ -29,10 +30,16 @@ class BlackBox:
         self.noisy = False
         if sigma > 0:
             self.noisy = True
+        self.noise_family = noise_family
 
 
     def noise(self, t):
-        return self.sigma * np.random.randn(1)
+        if self.noise_family == 'Gaussian'
+            return self.sigma * np.random.randn(1)
+        if self.noise_family == 'Bernoulli':
+            return self.sigma * (2 * np.random.binomial(1, .5) - 1)
+        else:
+            return 0
 
 
     def eval(self, x, t, for_report=False):

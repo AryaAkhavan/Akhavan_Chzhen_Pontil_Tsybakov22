@@ -31,7 +31,7 @@ def func_l1_center_test(x):
 
 
 if __name__ == '__main__':
-    dim = 500
+    dim = 5
     max_iter = 10000
     objective = func_l1_corner_test
     radius = np.sqrt(np.log(dim))
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     constr_type = 'simplex'
     norm_lipsch = 1
     to_plot = True
-    sigma = 0
+    sigma = 0.5
     objective_min = 0.
 
 
