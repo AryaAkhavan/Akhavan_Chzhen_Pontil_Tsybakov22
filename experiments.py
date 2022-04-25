@@ -2,32 +2,8 @@ import numpy as np
 from black_box import BlackBox
 from oracles import ZeroOrderL1, ZeroOrderL2
 import matplotlib.pyplot as plt
-from helpers import softmax
+from objectives import func_l2_test, func_l1_test, func_l1_corner_test, func_l1_center_test
 from timeit import default_timer as timer
-
-
-def func_l2_test(x):
-    d = len(x)
-    center = np.ones(d) / (4 * np.sqrt(d))
-    return np.linalg.norm(x - center) ** 2
-
-
-def func_l1_test(x):
-    d = len(x)
-    return np.linalg.norm(x - softmax(np.arange(d)), ord=1)
-
-
-def func_l1_corner_test(x):
-    d = len(x)
-    center = np.zeros(d)
-    center[0] = 1
-    return np.linalg.norm(x - center, ord=1)
-
-
-def func_l1_center_test(x):
-    d = len(x)
-    center = np.ones(d) / d
-    return np.linalg.norm(x - center, ord=1)
 
 
 if __name__ == '__main__':
