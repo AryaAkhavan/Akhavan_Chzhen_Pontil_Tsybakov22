@@ -20,8 +20,9 @@ class FuncL2Test():
             return self.min__
 
 
-    def eval(x):
+    def eval(self, x):
         return np.linalg.norm(x - self.center) ** 2
+
 
 
 def func_l2_test(x):
