@@ -34,7 +34,7 @@ class BlackBox:
 
 
     def noise(self, t):
-        if self.noise_family == 'Gaussian'
+        if self.noise_family == 'Gaussian':
             return self.sigma * np.random.randn(1)
         if self.noise_family == 'Bernoulli':
             return self.sigma * (2 * np.random.binomial(1, .5) - 1)

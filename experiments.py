@@ -41,6 +41,7 @@ if __name__ == '__main__':
     to_plot = True
     sigma = 0.5
     objective_min = 0.
+    noise_family = 'Bernoulli'
 
 
     setup_estimator = {
@@ -60,8 +61,10 @@ if __name__ == '__main__':
     estimator_l1 = ZeroOrderL1(**setup_estimator)
     estimator_l2 = ZeroOrderL2(**setup_estimator)
 
-    bb_l1 = BlackBox(estimator=estimator_l1, objective=objective, sigma=sigma)
-    bb_l2 = BlackBox(estimator=estimator_l2, objective=objective, sigma=sigma)
+    bb_l1 = BlackBox(estimator=estimator_l1, objective=objective,
+                     sigma=sigma, noise_family=noise_family)
+    bb_l2 = BlackBox(estimator=estimator_l2, objective=objective,
+                     sigma=sigma, noise_family=noise_family)
 
     start = timer()
     report_l1 = bb_l1.optimize(**setup_optimizer)
