@@ -8,7 +8,7 @@ from timeit import default_timer as timer
 
 if __name__ == '__main__':
     dim = 50
-    max_iter = 20000
+    max_iter = 10000
     constr_type = 2
     radius = 1
     objective = FuncL2Test(dim=dim)
