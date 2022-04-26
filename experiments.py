@@ -7,15 +7,15 @@ from timeit import default_timer as timer
 
 
 if __name__ == '__main__':
-    dim = 5
-    max_iter = 10000
-    constr_type = 'simplex'
-    radius = np.sqrt(np.log(dim))
-    objective = FuncL1Test(dim=dim)
-    norm_str_conv = 1
-    norm_lipsch = 1
+    dim = 50
+    max_iter = 20000
+    constr_type = 2
+    radius = 1
+    objective = FuncL2Test(dim=dim)
+    norm_str_conv = 2
+    norm_lipsch = 2
     to_plot = True
-    sigma = 0.5
+    sigma = 0.2
     objective_min = objective.get_min()
     noise_family = 'Bernoulli'
 

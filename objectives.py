@@ -9,7 +9,7 @@ class FuncL2Test():
             self.center = np.ones(dim) / (4 * np.sqrt(dim))
         else:
             self.center = center
-        self.min__ = None
+        self.min_ = None
 
 
     def get_min(self):
