@@ -13,37 +13,34 @@ class FuncL2Test():
 
 
     def get_min(self):
-        if self.min is not None:
-            self.min = 0
-            return self.min
+        if self.min_ is None:
+            self.min_ = 0.
+            return self.min_
         else:
-            return self.min__
+            return self.min_
 
 
     def eval(self, x):
         return np.linalg.norm(x - self.center) ** 2
 
 
-
-def func_l2_test(x):
-    d = len(x)
-    center = np.ones(d) / (4 * np.sqrt(d))
-    return np.linalg.norm(x - center) ** 2
-
-
-def func_l1_test(x):
-    d = len(x)
-    return np.linalg.norm(x - softmax(np.arange(d)), ord=1)
+class FuncL1Test():
+    def __init__(self, dim=5, center=None):
+        self.dim = dim
+        if center is None:
+            self.center = softmax(np.arange(dim))
+        else:
+            self.center = center
+        self.min_ = None
 
 
-def func_l1_corner_test(x):
-    d = len(x)
-    center = np.zeros(d)
-    center[0] = 1
-    return np.linalg.norm(x - center, ord=1)
+    def get_min(self):
+        if self.min_ is None:
+            self.min_ = 0.
+            return self.min_
+        else:
+            return self.min_
 
 
-def func_l1_center_test(x):
-    d = len(x)
-    center = np.ones(d) / d
-    return np.linalg.norm(x - center, ord=1)
+    def eval(self, x):
+        return np.linalg.norm(x - self.center, ord=1)

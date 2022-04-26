@@ -59,14 +59,14 @@ class BlackBox:
         """
         if for_report:
             if self.online:
-                return self.objective(x, t)
+                return self.objective.eval(x, t)
             else:
-                return self.objective(x)
+                return self.objective.eval(x)
 
         if self.online:
-            return self.objective(x, t) + self.noise(t)
+            return self.objective.eval(x, t) + self.noise(t)
         else:
-            return self.objective(x) + self.noise(t)
+            return self.objective.eval(x) + self.noise(t)
 
 
     def set_step_size(self, radius, grad_norm_sum):
