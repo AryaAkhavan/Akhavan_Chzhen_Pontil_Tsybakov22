@@ -104,17 +104,17 @@ class BlackBox:
         for t in range(max_iter):
             x_new = mirror_projection(cumul_grad, constr_type)
             x_final_unnormalized += x_new
-            if self.verbose >= 2:
-                print(f"Iteration number: {t+1}\n",
-                      f"Estimate vector: {x_final_unnormalized/(t+1)}")
+            #if self.verbose >= 2:
+                #print(f"Iteration number: {t+1}\n",
+                 #     f"Estimate vector: {x_final_unnormalized/(t+1)}")
             report.append(self.eval(x_final_unnormalized/(t+1), t+1, True))
-            if self.verbose >= 2:
-                print(f"Current: {x_final_unnormalized/(t+1)}")
+            #if self.verbose >= 2:
+                #print(f"Current: {x_final_unnormalized/(t+1)}")
             grad, norm_dual = self.estimator.estimate(x_new, t+1,
                                                       self.eval, self.noisy)
             grad_norm_sum += norm_dual
             eta = self.set_step_size(radius, grad_norm_sum)
             cumul_grad -= eta * grad
-        if self.verbose >= 3:
-            print(f"Estimate: {x_final_unnormalized / max_iter}")
+        #if self.verbose >= 3:
+            #print(f"Estimate: {x_final_unnormalized / max_iter}")
         return report
