@@ -26,6 +26,8 @@ def mirror_projection(x, constr_type=2):
 
     if constr_type == 'pos':
         x[x < 0] = 0
+        if np.linalg.norm(x)==0:
+            return x
         return x / np.linalg.norm(x)
 
     if constr_type == 'simplex':
