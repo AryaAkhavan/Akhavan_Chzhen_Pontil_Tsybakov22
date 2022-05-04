@@ -1,57 +1,16 @@
 import numpy as np
 from black_box import BlackBox
 from oracles import ZeroOrderL1, ZeroOrderL2
-import matplotlib.pyplot as plt
 from objectives import FuncL2Test, FuncL1Test
 import time
 import math
 import statistics
-import seaborn as sns
 import logging
 import pickle
 import os.path
 from tqdm import tqdm
+from plotter import plot_results
 from joblib import Parallel, delayed
-
-
-def plot_results(max_iter, dim, constr_type,
-                 objective_min, stack_l1,
-                 stack_l2, to_save=False):
-
-    error_l1 = np.array(stack_l1) - objective_min
-    std_l1 = np.array(error_l1).std(0)
-    mean_l1 = np.average(error_l1, axis=0)
-
-    error_l2 = np.array(stack_l2) - objective_min
-    std_l2 = np.array(error_l2).std(0)
-    mean_l2 = np.average(error_l2, axis=0)
-
-
-    colours = sns.color_palette('colorblind')
-    plt.plot(np.arange(max_iter)+1, np.array(mean_l1), color=colours[0],
-             label='Our', linestyle='--')
-    plt.fill_between(np.arange(max_iter)+1, mean_l1-std_l1, mean_l1+std_l1,
-                     facecolor=colours[0], alpha=0.3)
-    plt.plot(np.arange(max_iter)+1, np.array(mean_l2), color=colours[3],
-             label='Spherical', linestyle='-.')
-    plt.fill_between(np.arange(max_iter)+1, mean_l2-std_l2, mean_l2+std_l2,
-                     facecolor=colours[3], alpha=0.3)
-    font2 = {'family': 'serif', 'color': 'black', 'size': 12}
-    plt.xlabel('Number of iterations', fontdict=font2)
-    plt.ylabel("Optimization error", fontdict=font2)
-
-
-
-    plt.yscale('log')
-    plt.xscale('log')
-    plt.title(f"Constraint type: {constr_type}, dimension: {dim}")
-    plt.legend()
-
-
-    plt.show()
-    if to_save:
-        plt.savefig('plots/SIGNATURE.pdf')
-
 
 def inner_loop(i, estimator, sample, setup_optimizer,
              setup_black_box, SIGNATURE):
@@ -118,7 +77,7 @@ def run_experiment(dim, max_iter, sample, constr_type,
     stack_l2 = run_loop(estimator_l2, sample, setup_optimizer,
                         setup_black_box, SIGNATURE)
 
-    return stack_l1, stack_l2
+    return stack_l1, stack_l2, SIGNATURE
 
 
 if __name__ == '__main__':
@@ -128,7 +87,7 @@ if __name__ == '__main__':
 
 
     dim = 3000
-    max_iter = 10000000
+    max_iter = 5000
     sample = 4
     constr_type = 'simplex'
     radius = math.log(dim)**(1/2)
@@ -144,11 +103,13 @@ if __name__ == '__main__':
     if not os.path.exists('cache/'):
         os.makedirs('cache/')
 
-    stack_l1, stack_l2 = run_experiment(dim, max_iter, sample, constr_type,
-                   radius, objective, norm_str_conv, norm_lipsch,
-                   sigma, objective_min, noise_family)
+    stack_l1, stack_l2, SIGNATURE = run_experiment(dim, max_iter, sample,
+                                                   constr_type, radius,
+                                                   objective, norm_str_conv,
+                                                   norm_lipsch, sigma,
+                                                   objective_min, noise_family)
 
     if to_plot:
         plot_results(max_iter, dim, constr_type,
                      objective_min, stack_l1,
-                     stack_l2)
+                     stack_l2, SIGNATURE, True)
