@@ -31,6 +31,10 @@ class ZeroOrderL1(Oracle):
         self.norm_lipsch = norm_lipsch
 
 
+    def __format__(self, format_spec=None):
+        return "our_method"
+
+
     def discretization(self, t, noisy):
         # return self.radius / np.sqrt(t)
         bqd_inv = self.dim + 1
@@ -80,6 +84,10 @@ class ZeroOrderL2(Oracle):
         self.radius = radius
         self.norm_str_conv = norm_str_conv
         self.norm_lipsch = norm_lipsch
+
+
+    def __format__(self, format_spec=None):
+        return "spherical_method"
 
 
     def discretization(self, t, noisy):

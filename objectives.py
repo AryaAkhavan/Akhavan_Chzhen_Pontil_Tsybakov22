@@ -24,6 +24,10 @@ class FuncL2Test():
         return np.linalg.norm(x - self.center) ** 2
 
 
+    def __format__(self, format_spec=None):
+        return "L2_test_function"
+
+
 class FuncL1Test():
     def __init__(self, dim=5, center=None):
         """
@@ -48,5 +52,9 @@ class FuncL1Test():
 
     def eval(self, x):
         return np.linalg.norm(x - self.center, ord=1)
+
+
+    def __format__(self, format_spec=None):
+        return "L1_test_function"
 
 
