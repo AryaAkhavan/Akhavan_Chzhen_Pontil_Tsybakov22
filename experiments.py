@@ -127,9 +127,9 @@ if __name__ == '__main__':
     logging.basicConfig(level=level, format=fmt)
 
 
-    dim = 3
-    max_iter = 5000
-    sample = 40
+    dim = 3000
+    max_iter = 10000000
+    sample = 4
     constr_type = 'simplex'
     radius = math.log(dim)**(1/2)
     objective = FuncL1Test(dim=dim)
@@ -140,10 +140,7 @@ if __name__ == '__main__':
     noise_family = 'Bernoulli'
     to_plot = True
 
-    """
-        TODO:
-            5. Paralelize the loop for the variance (joblib or numba)
-    """
+
     if not os.path.exists('cache/'):
         os.makedirs('cache/')
 

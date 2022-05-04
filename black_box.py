@@ -102,6 +102,8 @@ class BlackBox:
         report = []
         x_final_unnormalized = np.zeros(dim)
         for t in range(max_iter):
+            if (t+1) % 10000 == 0:
+                print(f"[{t+1}/{max_iter}] optimizing...")
             x_new = mirror_projection(cumul_grad, constr_type)
             x_final_unnormalized += x_new
             #if self.verbose >= 2:
