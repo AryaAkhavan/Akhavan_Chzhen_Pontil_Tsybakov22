@@ -3,15 +3,20 @@ from black_box import BlackBox
 from oracles import ZeroOrderL1, ZeroOrderL2
 import matplotlib.pyplot as plt
 from objectives import FuncL2Test, FuncL1Test
-from timeit import default_timer as timer
+import time
 import math
 import statistics
 import seaborn as sns
+import logging
+import pickle
+import os.path
+from tqdm import tqdm
+from joblib import Parallel, delayed
 
 
-def plot_results(max_iter dim, constr_type, mean_l1, std_l1,
-                 mean_l2, std_l2, SIGNATURE, to_save=False):
-
+def plot_results(max_iter, dim, constr_type,
+                 objective_min, stack_l1,
+                 stack_l2, to_save=False):
 
     error_l1 = np.array(stack_l1) - objective_min
     std_l1 = np.array(error_l1).std(0)
@@ -48,39 +53,37 @@ def plot_results(max_iter dim, constr_type, mean_l1, std_l1,
         plt.savefig('plots/SIGNATURE.pdf')
 
 
-if __name__ == '__main__':
-    dim = 3
-    max_iter = 10000
-    sample = 100
-    constr_type = 'simplex'
-    radius = math.log(dim)**(1/2)
-    objective = FuncL1Test(dim=dim)
-    norm_str_conv = 1
-    norm_lipsch = 1
-    to_plot = True
-    sigma = 0
-    objective_min = objective.get_min()
-    noise_family = 'Bernoulli'
+def inner_loop(i, estimator, sample, setup_optimizer,
+             setup_black_box, SIGNATURE):
+    bb = BlackBox(estimator=estimator, **setup_black_box)
+    save_file_name = f'cache/{estimator}_{SIGNATURE}{i+1}'
+    if os.path.isfile(save_file_name):
+        logging.debug(f"[{i+1}/{sample}]: loaded")
+        with open(save_file_name, "rb") as fp:
+            report = pickle.load(fp)
+    else:
+        logging.debug(f"[{i+1}/{sample}]: optimizing")
+        report = bb.optimize(**setup_optimizer)
+        with open(save_file_name, "wb") as fp:
+            pickle.dump(report, fp)
+    return report
+
+
+def run_loop(estimator, sample, setup_optimizer,
+             setup_black_box, SIGNATURE):
+    results = Parallel(n_jobs=4)(delayed(inner_loop)(i, estimator, sample, setup_optimizer, setup_black_box, SIGNATURE) for i in tqdm(range(sample)))
+    return results
+
+
+def run_experiment(dim, max_iter, sample, constr_type,
+                   radius, objective, norm_str_conv, norm_lipsch,
+                   sigma, objective_min, noise_family):
+
+    SIGNATURE = ''.join(f'{value}_'.replace('.', 'DOT') for key, value in locals().items())
 
 
 
-    """
-        TODO:
-            1. Create a unique signature of an experiment.
-            2. Create two folders: one for cached experiments + for plots
-            3. Cached folder shouldn't be in git, plots can be in git
-            4. Before running experiments check if such signature exists in cached folder, if not then run experiments, otherwise load from cache (or make a parameter to_load_from_cache=True/False)
-            5. Paralelize the loop for the variance (joblib or numba)
-    """
-
-    # SIGNATURE = f"{dim}_{max_iter}_{sample}_{constr_type}_{int(radius)}_{norm_str_conv}_{?}.npy"
-
-    # folder with all the files:
-    #     - cached (never in git)
-    #     - plots  (can be in git)
-
-
-    black_box_setup = {
+    setup_black_box = {
     'objective': objective,
     'sigma': sigma,
     'noise_family': noise_family
@@ -101,45 +104,54 @@ if __name__ == '__main__':
     'norm_str_conv': norm_str_conv
     }
 
+
     estimator_l1 = ZeroOrderL1(**setup_estimator)
     estimator_l2 = ZeroOrderL2(**setup_estimator)
 
-    bb_l1 = BlackBox(estimator=estimator_l1, **black_box_setup)
-    bb_l2 = BlackBox(estimator=estimator_l2, **black_box_setup)
 
-    stack_l1 = []
-    for i in range(sample):
-        start = timer()
-        report_l1 = bb_l1.optimize(**setup_optimizer)
-        stack_l1.append(report_l1)
-        end = timer()
-        print(f"Run [{i+1} / {sample}]: finished in: {(end - start):.2f}sec")
-
-    # for i in range(sample):
-    #     if SIGNATURE_file_exists:
-    #         # report_l1 = load(SIGNATURE_file)
-    #         stack_l1.append(report_l1)
-    #         print("Run [{i+1} / {sample}]: loaded from cache.")
-
-    #     else:
-    #         start = timer()
-    #         report_l1 = bb_l1.optimize(**setup_optimizer)
-    #         stack_l1.append(report_l1)
-    #         end = timer()
-    #         print(f"Run [{i+1} / {sample}]: finished in: {(end - start):.2f}sec")
-
-    stack_l2 = []
-    for i in range(sample):
-        start = timer()
-        report_l2 = bb_l2.optimize(**setup_optimizer)
-        stack_l2.append(report_l2)
-        end = timer()
-        print(f"Run [{i+1} / {sample}] \n Spherical method finished in: {(end - start):.2f}sec")
+    logging.info(f"Our method started")
+    stack_l1 = run_loop(estimator_l1, sample, setup_optimizer,
+                        setup_black_box, SIGNATURE)
 
 
+    logging.info(f"Spherical method started")
+    stack_l2 = run_loop(estimator_l2, sample, setup_optimizer,
+                        setup_black_box, SIGNATURE)
 
+    return stack_l1, stack_l2
+
+
+if __name__ == '__main__':
+    level = logging.INFO
+    fmt = '[%(levelname)s] %(asctime)s - %(message)s'
+    logging.basicConfig(level=level, format=fmt)
+
+
+    dim = 3
+    max_iter = 5000
+    sample = 40
+    constr_type = 'simplex'
+    radius = math.log(dim)**(1/2)
+    objective = FuncL1Test(dim=dim)
+    norm_str_conv = 1
+    norm_lipsch = 1
+    sigma = 0
+    objective_min = objective.get_min()
+    noise_family = 'Bernoulli'
+    to_plot = True
+
+    """
+        TODO:
+            5. Paralelize the loop for the variance (joblib or numba)
+    """
+    if not os.path.exists('cache/'):
+        os.makedirs('cache/')
+
+    stack_l1, stack_l2 = run_experiment(dim, max_iter, sample, constr_type,
+                   radius, objective, norm_str_conv, norm_lipsch,
+                   sigma, objective_min, noise_family)
 
     if to_plot:
         plot_results(max_iter, dim, constr_type,
                      objective_min, stack_l1,
-                     stack_l2, SIGNATURE)
+                     stack_l2)
