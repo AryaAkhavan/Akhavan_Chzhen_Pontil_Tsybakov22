@@ -18,7 +18,7 @@ def sample_spherical(dim=3, norm_algo=1):
 
 
 def mirror_projection(x, constr_type=2):
-    if constr_type == 2:
+    if constr_type == 'euclid_ball':
         cur_norm = np.linalg.norm(x)
         if cur_norm > 1:
              return x / np.linalg.norm(x)

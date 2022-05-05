@@ -22,10 +22,14 @@ def plot_results(max_iter, dim, constr_type,
              label='Our', linestyle='--')
     plt.fill_between(np.arange(max_iter)+1, mean_l1-std_l1, mean_l1+std_l1,
                      facecolor=colours[0], alpha=0.3)
+
+
     plt.plot(np.arange(max_iter)+1, np.array(mean_l2), color=colours[3],
              label='Spherical', linestyle='-.')
     plt.fill_between(np.arange(max_iter)+1, mean_l2-std_l2, mean_l2+std_l2,
                      facecolor=colours[3], alpha=0.3)
+
+
     font2 = {'family': 'serif', 'color': 'black', 'size': 12}
     plt.xlabel('Number of iterations', fontdict=font2)
     plt.ylabel("Optimization error", fontdict=font2)
