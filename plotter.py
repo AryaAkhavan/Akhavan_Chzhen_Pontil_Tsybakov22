@@ -41,5 +41,5 @@ def plot_results(max_iter, dim, constr_type,
     if to_save:
         if not os.path.exists('plots/'):
             os.makedirs('plots/')
-        plt.savefig('plots/SIGNATURE.pdf',  bbox_inches='tight')
+        plt.savefig(f'plots/{SIGNATURE}.pdf',  bbox_inches='tight')
     plt.show()
