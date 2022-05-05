@@ -13,10 +13,10 @@ from plotter import plot_results
 from joblib import Parallel, delayed
 
 def inner_loop(i, estimator, sample, setup_optimizer,
-             setup_black_box, SIGNATURE):
+             setup_black_box, SIGNATURE, to_cache=True):
     bb = BlackBox(estimator=estimator, **setup_black_box)
     save_file_name = f'cache/{estimator}_{SIGNATURE}{i+1}'
-    if os.path.isfile(save_file_name):
+    if to_cache and os.path.isfile(save_file_name):
         logging.debug(f"[{i+1}/{sample}]: loaded")
         with open(save_file_name, "rb") as fp:
             report = pickle.load(fp)
@@ -29,14 +29,14 @@ def inner_loop(i, estimator, sample, setup_optimizer,
 
 
 def run_loop(estimator, sample, setup_optimizer,
-             setup_black_box, SIGNATURE):
-    results = Parallel(n_jobs=4)(delayed(inner_loop)(i, estimator, sample, setup_optimizer, setup_black_box, SIGNATURE) for i in tqdm(range(sample)))
+             setup_black_box, SIGNATURE, to_cache):
+    results = Parallel(n_jobs=4)(delayed(inner_loop)(i, estimator, sample, setup_optimizer, setup_black_box, SIGNATURE, to_cache) for i in tqdm(range(sample)))
     return results
 
 
 def run_experiment(dim, max_iter, sample, constr_type,
                    radius, objective, norm_str_conv, norm_lipsch,
-                   sigma, objective_min, noise_family):
+                   sigma, objective_min, noise_family, to_cache=True):
 
     SIGNATURE = ''.join(f'{value}_'.replace('.', 'DOT') for key, value in locals().items())
 
@@ -70,12 +70,12 @@ def run_experiment(dim, max_iter, sample, constr_type,
 
     logging.info(f"Our method started")
     stack_l1 = run_loop(estimator_l1, sample, setup_optimizer,
-                        setup_black_box, SIGNATURE)
+                        setup_black_box, SIGNATURE, to_cache)
 
 
     logging.info(f"Spherical method started")
     stack_l2 = run_loop(estimator_l2, sample, setup_optimizer,
-                        setup_black_box, SIGNATURE)
+                        setup_black_box, SIGNATURE, to_cache)
 
     return stack_l1, stack_l2, SIGNATURE
 
@@ -98,6 +98,8 @@ if __name__ == '__main__':
     objective_min = objective.get_min()
     noise_family = 'Bernoulli'
     to_plot = True
+    to_cache = True
+    to_save_plot = True
 
 
     if not os.path.exists('cache/'):
@@ -107,9 +109,10 @@ if __name__ == '__main__':
                                                    constr_type, radius,
                                                    objective, norm_str_conv,
                                                    norm_lipsch, sigma,
-                                                   objective_min, noise_family)
+                                                   objective_min, noise_family,
+                                                   to_cache)
 
     if to_plot:
         plot_results(max_iter, dim, constr_type,
                      objective_min, stack_l1,
-                     stack_l2, SIGNATURE, True)
+                     stack_l2, SIGNATURE, to_save_plot)
