@@ -85,8 +85,8 @@ if __name__ == '__main__':
     logging.basicConfig(level=level, format=fmt)
 
 
-    dim = 1000
-    max_iter = 10000
+    dim = 10000
+    max_iter = 100000
     sample = 4
     constr_type = 'simplex'
     radius = math.log(dim)**(1/2)
