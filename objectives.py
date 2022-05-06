@@ -109,7 +109,7 @@ class FTest():
 
 
     def eval(self, x):
-        return np.abs(x[0]-1) + np.linalg.norm(1- 2*x[2:] +2*x[1:self.dim-1], ord=1)
+        return np.abs(x[0]-1) + np.linalg.norm(1 +x[2:] -2*x[1:self.dim-1], ord=1)
 
 
     def __format__(self, format_spec=None):
