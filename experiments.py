@@ -1,7 +1,7 @@
 import numpy as np
 from black_box import BlackBox
 from oracles import ZeroOrderL1, ZeroOrderL2
-from objectives import FuncL2Test, FuncL1Test
+from objectives import FuncL2Test, FuncL1Test, New_Test, F_Test
 import time
 import math
 import statistics
@@ -85,13 +85,13 @@ if __name__ == '__main__':
     logging.basicConfig(level=level, format=fmt)
 
 
-    dim = 40000
+    dim = 1000
     max_iter = 10000
     sample = 4
     constr_type = 'simplex'
     radius = math.log(dim)**(1/2)
     # radius = 1
-    objective = FuncL1Test(dim=dim)
+    objective = New_Test(dim=dim)
     norm_str_conv = 1
     norm_lipsch = 1
     sigma = 0.
