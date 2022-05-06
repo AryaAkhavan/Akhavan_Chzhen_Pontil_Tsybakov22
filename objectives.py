@@ -57,7 +57,7 @@ class FuncL1Test():
     def __format__(self, format_spec=None):
         return "L1_test_function"
 
-class New_Test():
+class NewTest():
     def __init__(self, dim=5, center=None):
         """
 
@@ -84,9 +84,9 @@ class New_Test():
 
 
     def __format__(self, format_spec=None):
-        return "New_test"
+        return "NewTest"
 
-class F_Test():
+class FTest():
     def __init__(self, dim=5, center=None):
         """
 
@@ -109,13 +109,8 @@ class F_Test():
 
 
     def eval(self, x):
-        val = abs(x[0] - 1)
-
-        if self.dim > 1:
-            for i in range(self.dim - 1):
-                val += abs(1 + x[i + 1] - 2 * x[i])
-        return val
+        return np.abs(x[0]-1) + np.linalg.norm(1- 2*x[2:] +2*x[1:self.dim-1], ord=1)
 
 
     def __format__(self, format_spec=None):
-        return "F_test"
+        return "FTest"
