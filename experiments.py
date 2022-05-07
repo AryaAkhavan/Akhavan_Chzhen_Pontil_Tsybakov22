@@ -85,9 +85,9 @@ if __name__ == '__main__':
     logging.basicConfig(level=level, format=fmt)
 
 
-    dim = 5000
-    max_iter = 1000000
-    sample = 4
+    dim = 200
+    max_iter = 100000
+    sample = 10
     constr_type = 'simplex'
     radius = math.log(dim)**(1/2)
     # radius = 1
@@ -96,6 +96,7 @@ if __name__ == '__main__':
     norm_lipsch = 1
     sigma = 0.
     objective_min = objective.get_min()
+    #objective_min = 0
     noise_family = 'Gaussian'
     to_plot = True
     to_cache = True
