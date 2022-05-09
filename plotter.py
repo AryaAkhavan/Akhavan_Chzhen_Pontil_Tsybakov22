@@ -4,7 +4,7 @@ import numpy as np
 import os
 import matplotlib as mpl
 mpl.rcParams['text.usetex'] = True
-mpl.rcParams['text.latex.preamble'] = [r'\usepackage{amsmath}']
+mpl.rcParams['text.latex.preamble'] = r'\usepackage{amsmath}'
 
 
 def plot_results(max_iter, dim, constr_type,
@@ -19,9 +19,9 @@ def plot_results(max_iter, dim, constr_type,
     colours = sns.color_palette('colorblind')
 
     labels = {
-    'Our' : r'\large $\ell_1$-randomization (Our)',
-    'Spherical' : r'\large $\ell_2$-randomization',
-    'Gaussian' : r'\large Gaussian randomization',
+    'Our' : r'\Large $\ell_1$-randomization (Our)',
+    'Spherical' : r'\Large $\ell_2$-randomization',
+    'Gaussian' : r'\Large Gaussian randomization',
     }
 
     lines = {
@@ -31,7 +31,7 @@ def plot_results(max_iter, dim, constr_type,
     }
 
 
-
+    plt.figure(figsize=(7,3))
     for idx, (method_name, result) in enumerate(results.items()):
 
         error = np.array(result) - objective_min
@@ -54,7 +54,7 @@ def plot_results(max_iter, dim, constr_type,
 
     plt.yscale('log')
     #plt.xscale('log')
-    plt.title(rf"\Large Constraint type: {{\Large\texttt {constr_type}}}; \Large dimension: \Large ${dim}$")
+    plt.title(rf"\Large Constraint type: {{\Large\texttt {constr_type}}}; \Large dimension: \Large $d={dim}$")
     plt.legend()
 
 
