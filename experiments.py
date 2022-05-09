@@ -3,8 +3,6 @@ from black_box import BlackBox
 from oracles import ZeroOrderL1, ZeroOrderL2
 from objectives import FuncL2Test, FuncL1Test, NewTest, FTest, SumFuncL1Test
 import time
-import math
-import statistics
 import logging
 import pickle
 import os.path
@@ -85,18 +83,16 @@ if __name__ == '__main__':
     logging.basicConfig(level=level, format=fmt)
 
 
-    dim = 5
+    dim = 50
     max_iter = 100000
     sample = 4
     constr_type = 'simplex'
-    radius = math.log(dim)**(1/2)
-    # radius = 1
+    radius = np.log(dim)**(1/2) if constr_type=='simplex' else 1
     objective = SumFuncL1Test(dim=dim)
     norm_str_conv = 1
     norm_lipsch = 1
     sigma = 0.
     objective_min = objective.get_min()
-    #objective_min = 0
     noise_family = 'Gaussian'
     to_plot = True
     to_cache = True
