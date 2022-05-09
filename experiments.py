@@ -8,7 +8,7 @@ from joblib import Parallel, delayed
 
 from plotter import plot_results
 from black_box import BlackBox
-from oracles import ZeroOrderL1, ZeroOrderL2
+from oracles import ZeroOrderL1, ZeroOrderL2, ZeroOrderGaussian
 from objectives import FuncL2Test, FuncL1Test, NewTest, FTest, SumFuncL1Test
 
 N_JOBS = 4
@@ -66,16 +66,22 @@ def run_experiment(dim, max_iter, sample, constr_type,
     }
 
 
-    logging.info(f"Our method started")
-    stack_l1 = run_loop(ZeroOrderL1, sample, setup_estimator, setup_optimizer,
-                        setup_black_box, SIGNATURE, to_cache)
+    methods = {
+    'Our' : ZeroOrderL1,
+    'L2 Spherical' : ZeroOrderL2,
+    'Gaussian' : ZeroOrderGaussian
+    }
 
 
-    logging.info(f"Spherical method started")
-    stack_l2 = run_loop(ZeroOrderL2, sample, setup_estimator, setup_optimizer,
-                        setup_black_box, SIGNATURE, to_cache)
+    results = {}
 
-    return stack_l1, stack_l2, SIGNATURE
+    for method_name, method in methods.items():
+
+        results[method_name] =  run_loop(method, sample, setup_estimator,
+                                         setup_optimizer, setup_black_box,
+                                         SIGNATURE, to_cache)
+
+    return results, SIGNATURE
 
 
 if __name__ == '__main__':
@@ -85,7 +91,7 @@ if __name__ == '__main__':
 
 
     dim = 50
-    max_iter = 100000
+    max_iter = 20000
     sample = 4
     constr_type = 'simplex'
     radius = np.log(dim)**(1/2) if constr_type=='simplex' else 1
@@ -103,7 +109,7 @@ if __name__ == '__main__':
     if not os.path.exists('cache/'):
         os.makedirs('cache/')
 
-    stack_l1, stack_l2, SIGNATURE = run_experiment(dim, max_iter, sample,
+    results, SIGNATURE = run_experiment(dim, max_iter, sample,
                                                    constr_type, radius,
                                                    objective, norm_str_conv,
                                                    norm_lipsch, sigma,
@@ -112,5 +118,4 @@ if __name__ == '__main__':
 
     if to_plot:
         plot_results(max_iter, dim, constr_type,
-                     objective_min, stack_l1,
-                     stack_l2, SIGNATURE, to_save_plot)
+                     objective_min, results, SIGNATURE, to_save_plot)

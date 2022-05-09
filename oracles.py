@@ -53,7 +53,7 @@ class ZeroOrderL1(Oracle):
 
     def estimate(self, x, t, function, noisy):
         h = self.discretization(t, noisy)
-        v = sample_spherical(self.dim, 1)
+        v = sample_spherical(self.dim, norm_algo=1)
         v2 = np.sign(v)
         x_left = x - h * v
         x_right = x + h * v
@@ -102,10 +102,59 @@ class ZeroOrderL2(Oracle):
 
     def estimate(self, x, t, function, noisy):
         h = self.discretization(t, noisy)
-        v = sample_spherical(self.dim, 2)
+        v = sample_spherical(self.dim, norm_algo=2)
         x_left = x - h * v
         x_right = x + h * v
         delta = function(x_right, t) - function(x_left, t)
         grad = self.dim * delta * v / (2 * h)
+        dual_norm = np.linalg.norm(grad, ord=norm_dual(self.norm_str_conv)) ** 2
+        return grad, dual_norm
+
+
+
+
+class ZeroOrderGaussian(Oracle):
+    def __init__(self, dim=100,
+                 radius=1,
+                 norm_str_conv=2,
+                 norm_lipsch=2):
+        """Spherical based method
+
+        Parameters
+        ----------
+        dim : int, optional
+            dimension
+        radius : int, optional
+            prox radius
+        norm_str_conv : int, optional
+            strong convexity norm
+        norm_lipsch : int, optional
+            lipshcitz norm
+        """
+        self.dim = dim
+        self.radius = radius
+        self.norm_str_conv = norm_str_conv
+        self.norm_lipsch = norm_lipsch
+
+
+    def __format__(self, format_spec=None):
+        if format_spec == 'b':
+            return "Gaussian smoothing method"
+        return "gaussian_method"
+
+
+    def discretization(self, t, noisy):
+        if not noisy:
+            return self.radius / np.sqrt(t)
+        else: return np.sqrt(self.radius / np.sqrt(t))
+
+
+    def estimate(self, x, t, function, noisy):
+        h = self.discretization(t, noisy)
+        v = np.random.normal(0, 1, self.dim)
+        x_left = x - h * v
+        x_right = x + h * v
+        delta = function(x_right, t) - function(x_left, t)
+        grad = delta * v / (2 * h)
         dual_norm = np.linalg.norm(grad, ord=norm_dual(self.norm_str_conv)) ** 2
         return grad, dual_norm
