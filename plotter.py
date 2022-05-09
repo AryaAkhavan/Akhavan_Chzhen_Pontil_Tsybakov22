@@ -8,7 +8,7 @@ def plot_results(max_iter, dim, constr_type,
                  objective_min, stack_l1,
                  stack_l2, SIGNATURE, to_save=False):
 
-    grid = np.agrid(max_iter)+1
+    grid = np.arange(max_iter)+1
     error_l1 = np.array(stack_l1) - objective_min
     std_l1 = np.array(error_l1).std(0)
     mean_l1 = np.average(error_l1, axis=0)
@@ -17,26 +17,23 @@ def plot_results(max_iter, dim, constr_type,
     std_l2 = np.array(error_l2).std(0)
     mean_l2 = np.average(error_l2, axis=0)
 
-    if (max_iter) > 10**5:
-        jumps = np.agrid(0, max_iter, step=10**3)
-        std_l1 = std_l1[jumps[jumps < max_iter]]
-        mean_l1 = mean_l1[jumps[jumps < max_iter]]
+    jump_default = 100
+    multiplier = 50
 
-        std_l2 = std_l2 [jumps[jumps < max_iter]]
-        mean_l2 = mean_l2[jumps[jumps < max_iter]]
-
-        grid = grid[jumps[jumps < max_iter]]+1
+    jump = jump_default if multiplier * max_iter > jump_default else 1
 
     colours = sns.color_palette('colorblind')
-    plt.plot(grid, np.array(mean_l1), color=colours[0],
+    plt.plot(grid[0::jump], np.array(mean_l1)[0::jump], color=colours[0],
              label='Our', linestyle='--')
-    plt.fill_between(grid, mean_l1-std_l1, mean_l1+std_l1,
+    plt.fill_between(grid[0::jump], mean_l1[0::jump]-std_l1[0::jump],
+                     mean_l1[0::jump]+std_l1[0::jump],
                      facecolor=colours[0], alpha=0.3)
 
 
-    plt.plot(grid, np.array(mean_l2), color=colours[3],
+    plt.plot(grid[0::jump], np.array(mean_l2)[0::jump], color=colours[3],
              label='Spherical', linestyle='-.')
-    plt.fill_between(grid, mean_l2-std_l2, mean_l2+std_l2,
+    plt.fill_between(grid[0::jump], mean_l2[0::jump]-std_l2[0::jump],
+                     mean_l2[0::jump]+std_l2[0::jump],
                      facecolor=colours[3], alpha=0.3)
 
 

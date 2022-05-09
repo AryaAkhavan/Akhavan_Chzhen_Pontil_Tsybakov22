@@ -87,7 +87,7 @@ if __name__ == '__main__':
 
     dim = 500
     max_iter = 100000
-    sample = 10
+    sample = 4
     constr_type = 'simplex'
     radius = math.log(dim)**(1/2)
     # radius = 1
