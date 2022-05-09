@@ -1,14 +1,15 @@
 import numpy as np
-from black_box import BlackBox
-from oracles import ZeroOrderL1, ZeroOrderL2
-from objectives import FuncL2Test, FuncL1Test, NewTest, FTest, SumFuncL1Test
-import time
 import logging
 import pickle
 import os.path
 from tqdm import tqdm
-from plotter import plot_results
 from joblib import Parallel, delayed
+
+
+from plotter import plot_results
+from black_box import BlackBox
+from oracles import ZeroOrderL1, ZeroOrderL2
+from objectives import FuncL2Test, FuncL1Test, NewTest, FTest, SumFuncL1Test
 
 N_JOBS = 4
 
