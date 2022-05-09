@@ -85,7 +85,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=level, format=fmt)
 
 
-    dim = 500
+    dim = 5
     max_iter = 100000
     sample = 4
     constr_type = 'simplex'

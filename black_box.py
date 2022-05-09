@@ -5,6 +5,9 @@ from helpers import softmax, mirror_projection, norm_dual
 
 
 class BlackBox:
+
+    MESSAGE_PER_N = 10000
+
     def __init__(self, estimator, objective,
                  online=False, verbose=1, sigma=0,
                  noise_family='Gaussian'):
@@ -102,8 +105,8 @@ class BlackBox:
         report = []
         x_final_unnormalized = np.zeros(dim)
         for t in range(max_iter):
-            if (t+1) % 10000 == 0:
-                print(f"[{t+1}/{max_iter}] optimizing...")
+            if (t+1) % self.MESSAGE_PER_N == 0:
+                print(f"[{t+1}/{max_iter}] {100 * (t+1) / max_iter:.0f} % optimizing...")
             x_new = mirror_projection(cumul_grad, constr_type)
             x_final_unnormalized += x_new
             #if self.verbose >= 2:
