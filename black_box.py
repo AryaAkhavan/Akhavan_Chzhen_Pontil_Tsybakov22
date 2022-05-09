@@ -106,7 +106,7 @@ class BlackBox:
         x_final_unnormalized = np.zeros(dim)
         for t in range(max_iter):
             if (t+1) % self.MESSAGE_PER_N == 0:
-                print(f"[{t+1}/{max_iter}] {100 * (t+1) / max_iter:.0f}% optimizing...")
+                print(f"[{self.estimator:b}] {100 * (t+1) / max_iter:.0f}% optimizing...")
             x_new = mirror_projection(cumul_grad, constr_type)
             x_final_unnormalized += x_new
             report.append(self.eval(x_final_unnormalized/(t+1), t+1, True))

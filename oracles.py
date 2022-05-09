@@ -32,6 +32,8 @@ class ZeroOrderL1(Oracle):
 
 
     def __format__(self, format_spec=None):
+        if format_spec == 'b':
+            return "Our method"
         return "our_method"
 
 
@@ -87,6 +89,8 @@ class ZeroOrderL2(Oracle):
 
 
     def __format__(self, format_spec=None):
+        if format_spec == 'b':
+            return "L2 Spherical method"
         return "spherical_method"
 
 
