@@ -68,7 +68,7 @@ def run_experiment(dim, max_iter, sample, constr_type,
 
     methods = {
     'Our' : ZeroOrderL1,
-    'L2 Spherical' : ZeroOrderL2,
+    'Spherical' : ZeroOrderL2,
     'Gaussian' : ZeroOrderGaussian
     }
 
@@ -90,8 +90,8 @@ if __name__ == '__main__':
     logging.basicConfig(level=level, format=fmt)
 
 
-    dim = 50
-    max_iter = 20000
+    dim = 500
+    max_iter = 100000
     sample = 4
     constr_type = 'simplex'
     radius = np.log(dim)**(1/2) if constr_type=='simplex' else 1

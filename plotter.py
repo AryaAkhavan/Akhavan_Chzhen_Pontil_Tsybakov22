@@ -2,6 +2,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import os
+import matplotlib as mpl
+mpl.rcParams['text.usetex'] = True
+mpl.rcParams['text.latex.preamble'] = [r'\usepackage{amsmath}']
 
 
 def plot_results(max_iter, dim, constr_type,
@@ -15,6 +18,18 @@ def plot_results(max_iter, dim, constr_type,
     jump = jump_default if multiplier * max_iter > jump_default else 1
     colours = sns.color_palette('colorblind')
 
+    labels = {
+    'Our' : r'\large $\ell_1$-randomization (Our)',
+    'Spherical' : r'\large $\ell_2$-randomization',
+    'Gaussian' : r'\large Gaussian randomization',
+    }
+
+    lines = {
+    'Our' : '-',
+    'Spherical' : '-.',
+    'Gaussian' : '--',
+    }
+
 
 
     for idx, (method_name, result) in enumerate(results.items()):
@@ -26,22 +41,20 @@ def plot_results(max_iter, dim, constr_type,
 
 
         plt.plot(grid[0::jump], np.array(mean)[0::jump], color=colours[idx],
-                 label=method_name, linestyle='--')
+                 label=labels[method_name], linestyle=lines[method_name])
         plt.fill_between(grid[0::jump], mean[0::jump]-std[0::jump],
                          mean[0::jump]+std[0::jump],
                          facecolor=colours[idx], alpha=0.3)
 
 
-
-    font2 = {'family': 'serif', 'color': 'black', 'size': 12}
-    plt.xlabel('Number of iterations', fontdict=font2)
-    plt.ylabel("Function value", fontdict=font2)
+    plt.xlabel(r'\Large Number of iterations')
+    plt.ylabel(r"\Large Function value")
 
 
 
     plt.yscale('log')
     #plt.xscale('log')
-    plt.title(f"Constraint type: {constr_type}; dimension: {dim}")
+    plt.title(rf"\Large Constraint type: {{\Large\texttt {constr_type}}}; \Large dimension: \Large ${dim}$")
     plt.legend()
 
 
