@@ -35,8 +35,8 @@ def plot_results(max_iter, dim, constr_type,
     for idx, (method_name, result) in enumerate(results.items()):
 
         error = np.array(result) - objective_min
-        std = np.array(result).std(0)
-        mean = np.average(result, axis=0)
+        std = np.array(error).std(0)
+        mean = np.average(error, axis=0)
 
 
 
@@ -48,11 +48,11 @@ def plot_results(max_iter, dim, constr_type,
 
 
     plt.xlabel(r'\Large Number of iterations')
-    plt.ylabel(r"\Large Function value")
+    plt.ylabel(r"\Large Optimization error")
 
 
 
-    plt.yscale('log')
+    #plt.yscale('log')
     #plt.xscale('log')
     plt.title(rf"\Large Constraint type: {{\Large\texttt {constr_type}}}; \Large dimension: \Large $d={dim}$")
     plt.legend()

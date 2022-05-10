@@ -69,7 +69,7 @@ def run_experiment(dim, max_iter, sample, constr_type,
     methods = {
     'Our' : ZeroOrderL1,
     'Spherical' : ZeroOrderL2,
-    'Gaussian' : ZeroOrderGaussian
+    #'Gaussian' : ZeroOrderGaussian
     }
 
 
@@ -90,9 +90,9 @@ if __name__ == '__main__':
     logging.basicConfig(level=level, format=fmt)
 
 
-    dim = 500
-    max_iter = 100000
-    sample = 4
+    dim = 1000
+    max_iter = 300000
+    sample = 30
     constr_type = 'simplex'
     radius = np.log(dim)**(1/2) if constr_type=='simplex' else 1
     objective = SumFuncL1Test(dim=dim)

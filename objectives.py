@@ -75,7 +75,7 @@ class SumFuncL1Test():
 
     def get_min(self):
         if self.min_ is None:
-            self.min_ = 0.
+            self.min_ = 0.9
             return self.min_
         else:
             return self.min_
