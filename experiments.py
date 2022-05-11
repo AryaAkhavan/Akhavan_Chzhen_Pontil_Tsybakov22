@@ -12,6 +12,9 @@ from oracles import ZeroOrderL1, ZeroOrderL2, ZeroOrderGaussian
 from objectives import FuncL2Test, FuncL1Test, NewTest, FTest, SumFuncL1Test
 
 N_JOBS = 4
+level = logging.INFO
+fmt = '[%(levelname)s] %(asctime)s - %(message)s'
+logging.basicConfig(level=level, format=fmt)
 
 
 def inner_loop(i, estimator, sample, setup_optimizer,
@@ -40,7 +43,15 @@ def run_experiment(dim, max_iter, sample, constr_type,
                    radius, objective, norm_str_conv, norm_lipsch,
                    sigma, objective_min, noise_family, to_cache=True):
 
-    SIGNATURE = ''.join(f'{value}_'.replace('.', 'DOT') for key, value in locals().items())
+
+
+    sign_arya_style = [to_cache, noise_family, objective_min,
+                       sigma, norm_lipsch, norm_str_conv,
+                       objective, radius, constr_type, sample,
+                       max_iter, dim]
+
+
+    SIGNATURE = ''.join(f'{value}_'.replace('.', 'DOT') for value in sign_arya_style)
 
 
 
@@ -84,10 +95,25 @@ def run_experiment(dim, max_iter, sample, constr_type,
     return results, SIGNATURE
 
 
+def main(dim, max_iter, sample, constr_type, radius, objective,
+         norm_str_conv, norm_lipsch, sigma, objective_min, noise_family,
+         to_cache, to_save_plot):
+    if not os.path.exists('cache/'):
+        os.makedirs('cache/')
+
+    results, SIGNATURE = run_experiment(dim, max_iter, sample,
+                                        constr_type, radius,
+                                        objective, norm_str_conv,
+                                        norm_lipsch, sigma,
+                                        objective_min, noise_family,
+                                        to_cache)
+
+
+    return results, SIGNATURE
+
+
+
 if __name__ == '__main__':
-    level = logging.INFO
-    fmt = '[%(levelname)s] %(asctime)s - %(message)s'
-    logging.basicConfig(level=level, format=fmt)
 
 
     dim = 1000
@@ -105,16 +131,11 @@ if __name__ == '__main__':
     to_cache = True
     to_save_plot = True
 
+    results, SIGNATURE = main(dim, max_iter, sample, constr_type, radius,
+                              objective, norm_str_conv, norm_lipsch, sigma,
+                              objective_min, noise_family, to_cache,
+                              to_save_plot)
 
-    if not os.path.exists('cache/'):
-        os.makedirs('cache/')
-
-    results, SIGNATURE = run_experiment(dim, max_iter, sample,
-                                                   constr_type, radius,
-                                                   objective, norm_str_conv,
-                                                   norm_lipsch, sigma,
-                                                   objective_min, noise_family,
-                                                   to_cache)
 
     if to_plot:
         plot_results(max_iter, dim, constr_type,
