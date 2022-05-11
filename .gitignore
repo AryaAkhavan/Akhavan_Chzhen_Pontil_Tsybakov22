@@ -4,3 +4,4 @@ cache/
 plots/
 .ipynb_checkpoints/
 plot_redactor.ipynb
+.idea/
