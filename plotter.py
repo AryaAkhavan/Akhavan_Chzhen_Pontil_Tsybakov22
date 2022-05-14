@@ -63,3 +63,20 @@ def plot_results(max_iter, dim, constr_type,
             os.makedirs('plots/')
         plt.savefig(f'plots/{SIGNATURE}.pdf',  bbox_inches='tight')
     plt.show()
+
+def plot_logratio(dims, com, sign, to_save=False):
+    plt.plot(dims, com)
+    colours = sns.color_palette('colorblind')
+    plt.xlabel(r'\Large Dimension')
+    plt.ylabel(r"\Large Ratio")
+
+    # plt.yscale('log')
+    # plt.xscale('log')
+    #plt.title(rf"\Large Constraint type: {{\Large\texttt {constr_type}}}; \Large dimension: \Large $d={dim}$")
+    #plt.legend()
+
+    if to_save:
+        if not os.path.exists('plots/'):
+            os.makedirs('plots/')
+        plt.savefig(f'plots/{sign}.pdf',  bbox_inches='tight')
+    plt.show()
