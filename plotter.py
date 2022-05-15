@@ -64,8 +64,8 @@ def plot_results(max_iter, dim, constr_type,
         plt.savefig(f'plots/{SIGNATURE}.pdf',  bbox_inches='tight')
     plt.show()
 
-def plot_logratio(dims, com, sign, to_save=False):
-    plt.plot(dims, com)
+def plot_ratio(dims, results, SIGNATURE, to_save=False):
+    plt.plot(dims, results)
     colours = sns.color_palette('colorblind')
     plt.xlabel(r'\Large Dimension')
     plt.ylabel(r"\Large Ratio")
@@ -78,5 +78,5 @@ def plot_logratio(dims, com, sign, to_save=False):
     if to_save:
         if not os.path.exists('plots/'):
             os.makedirs('plots/')
-        plt.savefig(f'plots/{sign}.pdf',  bbox_inches='tight')
+        plt.savefig(f'plots/{SIGNATURE}.pdf',  bbox_inches='tight')
     plt.show()

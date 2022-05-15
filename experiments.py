@@ -6,7 +6,7 @@ from tqdm import tqdm
 from joblib import Parallel, delayed
 
 
-from plotter import plot_results, plot_logratio
+from plotter import plot_results, plot_ratio
 from black_box import BlackBox
 from oracles import ZeroOrderL1, ZeroOrderL2, ZeroOrderGaussian
 from objectives import FuncL2Test, FuncL1Test, NewTest, FTest, SumFuncL1Test
@@ -65,7 +65,7 @@ def multi_comp_SumFuncL1Test(criteria, dims,
                 mean = np.average(error, axis=0)
                 final_iter[method_name, dim] = mean[-1]
 
-            results.append(final_iter['Our', dim] / (radius * final_iter['Spherical', dim]))
+            results.append(radius *final_iter['Our', dim] / final_iter['Spherical', dim])
         with open(save_file_name, "wb") as fp:
             pickle.dump(results, fp)
     return results, SIGNATURE
@@ -166,7 +166,7 @@ if __name__ == '__main__':
 
 
     max_iter = 1000000
-    sample = 10
+    sample = 30
 
     norm_str_conv = 1
     norm_lipsch = 1
@@ -195,4 +195,4 @@ if __name__ == '__main__':
                             constr_type, sample,
                            max_iter, to_cache=True)
         if to_plot:
-            plot_logratio(dims, results, SIGNATURE, to_save_plot)
+            plot_ratio(dims, results, SIGNATURE, to_save_plot)
