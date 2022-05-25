@@ -152,7 +152,7 @@ def main(dim, max_iter, sample, constr_type, radius, objective,
 
 if __name__ == '__main__':
 
-    criteria = 'multi_dim'
+    criteria = 'single_dim'
     constr_type = 'simplex'
 
     if criteria == 'single_dim':
