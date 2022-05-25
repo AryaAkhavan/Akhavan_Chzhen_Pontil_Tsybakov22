@@ -27,7 +27,7 @@ All parameters can be initialized in **experimetns.py**:
 
  *objective*: The objective function. All objective functions are implemented in **objevives.py**.
  
- *norm_str_conv*: set **q** if the objective function is a Lipshcitz function with respect to *l_q*-norm.
+ *norm_str_conv*: set *q* if the objective function is a Lipshcitz function with respect to *l_q*-norm.
  
  *sigma*:
  
