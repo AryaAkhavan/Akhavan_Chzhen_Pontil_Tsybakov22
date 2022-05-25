@@ -20,7 +20,7 @@ All parameters can be initialized in **experimetns.py**:
 *constr_type*: The type of the constraint set, can be assigned as:
 
    1. 'simplex': If the constraint set is simplex 
-   2. 'euclid_ball': if the constraint set is simplex, is the unit sphere 
+   2. 'euclid_ball': if the constraint set is the unit sphere 
    3. 'pos': if the constraint set is the portion of the unit sphere that contains the vector with non-negative entries
 
  *objective*: The objective function. All objective functions are implemented in **objevives.py**.
