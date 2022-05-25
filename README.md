@@ -1,13 +1,13 @@
-# Project descrption
+## Project descrption
 
 We implement two algorithms, namely *l_1 randomization* and *l_2 randomization* for optimizing a convex and Lipschitz function. The code provides a comparison between the performance of the above algorithms, which are detailed in the paper. The experiment shown in Section 7 of the paper is analyzed using the test function *SumFuncL1Test*, implemented in **objevives.py**.
 
-# Assets
+## Installation
 
 1. Python 3.9.12
 2. Joblib (see https://pypi.org/project/joblib/#downloads)
 
-# Usage
+## Usage
 
 All parameters can be initialized in **experimetns.py**:
 
