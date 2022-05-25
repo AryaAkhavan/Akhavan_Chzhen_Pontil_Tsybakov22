@@ -1,3 +1,6 @@
+# <Numerical experiments: A gradient estimator via L1-randomization for online
+zero-order optimization with two point feedback>
+
 ## Project descrption
 
 We implement two algorithms, namely *l_1 randomization* and *l_2 randomization* for optimizing a convex and Lipschitz function. The code provides a comparison between the performance of the above algorithms, which are detailed in the paper. The experiment shown in Section 7 of the paper is analyzed using the test function *SumFuncL1Test*, implemented in **objevives.py**.
