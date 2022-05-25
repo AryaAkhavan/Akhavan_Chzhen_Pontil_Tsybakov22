@@ -15,7 +15,7 @@ All parameters can be initialized in **experimetns.py**:
 
 *dim*: The dimension of the objective function
 
-*max_iter*: Maximum number of iterations, the parameter *T* in the paper
+*max_iter*: Maximum number of iterations
 
 *sample*: The final plot is the average over *sample* number of trials
 
