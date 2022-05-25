@@ -13,9 +13,9 @@ We implement two algorithms, namely *l_1 randomization* and *l_2 randomization* 
 
 All parameters can be initialized in **experimetns.py**:
 
-*dim*: The dimension of the objective function.
+*dim*: The dimension of the objective function
 
-*max_iter*: Maximum number of iterations, the parameter *T* in the paper.
+*max_iter*: Maximum number of iterations, the parameter *T* in the paper
 
 *sample*: The final plot is the average over *sample* number of trials
 
@@ -25,9 +25,9 @@ All parameters can be initialized in **experimetns.py**:
    2. 'euclid_ball': If the constraint set is the unit sphere 
    3. 'pos': If the constraint set is the portion of the unit sphere that contains the vector with non-negative entries
 
- *objective*: The objective function. All objective functions are implemented in **objevives.py**.
+ *objective*: The objective function. All objective functions are implemented in **objevives.py**
  
- *norm_str_conv*: Set *q* if the objective function is a Lipshcitz function with respect to *l_q*-norm.
+ *norm_str_conv*: Set *q* if the objective function is a Lipshcitz function with respect to *l_q*-norm
  
  *sigma*:
  
