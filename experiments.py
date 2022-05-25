@@ -8,8 +8,8 @@ from joblib import Parallel, delayed
 
 from plotter import plot_results
 from black_box import BlackBox
-from oracles import ZeroOrderL1, ZeroOrderL2, ZeroOrderGaussian
-from objectives import FuncL2Test, FuncL1Test, NewTest, FTest, SumFuncL1Test
+from oracles import ZeroOrderL1, ZeroOrderL2
+from objectives import SumFuncL1Test
 
 N_JOBS = 4
 level = logging.INFO
@@ -79,8 +79,7 @@ def run_experiment(dim, max_iter, sample, constr_type,
 
     methods = {
     'Our' : ZeroOrderL1,
-    'Spherical' : ZeroOrderL2,
-    #'Gaussian' : ZeroOrderGaussian
+    'Spherical' : ZeroOrderL2
     }
 
 
@@ -116,13 +115,13 @@ def main(dim, max_iter, sample, constr_type, radius, objective,
 if __name__ == '__main__':
 
 
-    dim = 1000
-    max_iter = 300000
-    sample = 30
+    dim = 100
+    max_iter = 30
+    sample = 3
     constr_type = 'simplex'
     radius = np.log(dim)**(1/2) if constr_type=='simplex' else 1
     objective = SumFuncL1Test(dim=dim)
-    norm_str_conv = 1
+    norm_str_conv = 1 if constr_type=='simplex' else 2
     norm_lipsch = 1
     sigma = 0.
     objective_min = objective.get_min()

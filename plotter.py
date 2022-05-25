@@ -21,13 +21,11 @@ def plot_results(max_iter, dim, constr_type,
     labels = {
     'Our' : r'\Large $\ell_1$-randomization (Our)',
     'Spherical' : r'\Large $\ell_2$-randomization',
-    'Gaussian' : r'\Large Gaussian randomization',
     }
 
     lines = {
     'Our' : '-',
     'Spherical' : '-.',
-    'Gaussian' : '--',
     }
 
 
