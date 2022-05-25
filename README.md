@@ -7,7 +7,7 @@ We implement two algorithms, namely *l_1 randomization* and *l_2 randomization* 
 1. Python 3.9.12
 2. Joblib (see https://pypi.org/project/joblib/#downloads)
 
-# How to use
+# Usage
 
 All parameters can be initialized in **experimetns.py**:
 
