@@ -9,7 +9,7 @@ We implement two algorithms, namely *l_1 randomization* and *l_2 randomization* 
 
 # How to use
 
-All parameters can be initialized in experimetns.py:
+All parameters can be initialized in **experimetns.py**:
 
 *dim*: The dimension of the objective function.
 
