@@ -29,12 +29,12 @@ All parameters can be initialized in experimetns.py:
  
  *sigma*:
  
-        1. under Assumption 2, set *0*
-        2. under Assumption 3, set the upper bound for the second moment of the noise 
+   1. under Assumption 2, set *0*
+   2. under Assumption 3, set the upper bound for the second moment of the noise 
         
 *noise_family*: It is the distribution of noise that can be set as:
 
-        1. 'Gaussian': if the noise is a standard Gaussian random vaiable
-        2. ''Bernoulli': if the noise is a Bernoulli random vaiable
+   1. 'Gaussian': if the noise is a standard Gaussian random vaiable
+   2. ''Bernoulli': if the noise is a Bernoulli random vaiable
 
 
