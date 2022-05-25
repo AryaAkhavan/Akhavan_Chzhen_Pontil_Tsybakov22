@@ -1,5 +1,4 @@
-# <Numerical experiments: A gradient estimator via L1-randomization for online
-zero-order optimization with two point feedback>
+# <Numerical experiments: A gradient estimator via L1-randomization for online zero-order optimization with two point feedback>
 
 ## Project descrption
 
