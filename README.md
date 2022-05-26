@@ -37,6 +37,6 @@ All parameters can be initialized in **experimetns.py**:
 *noise_family*: It is the distribution of noise that can be set as:
 
    1. 'Gaussian': If the noise is a standard Gaussian random variable
-   2. ''Bernoulli': If the noise is a Bernoulli random vaiable
+   2. ''Bernoulli': If the noise is a Bernoulli random variable
 
 
