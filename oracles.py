@@ -46,7 +46,7 @@ class ZeroOrderL1(Oracle):
             bqd_inv /= np.exp(1) * np.log(self.dim)
         if not noisy:
             bqd_inv *= self.dim ** (1/2 - 1/self.norm_str_conv + 1/min(2, self.norm_lipsch))
-            return 3*self.radius * bqd_inv / (200 * np.sqrt(t))
+            return 3 * self.radius * bqd_inv / (200 * np.sqrt(t))
         else:
             return np.sqrt(1.25 * self.radius * bqd_inv / np.sqrt(t)) * self.dim ** (1 - .5 / self.norm_str_conv)
 
