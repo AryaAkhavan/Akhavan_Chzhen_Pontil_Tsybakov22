@@ -113,8 +113,6 @@ def main(dim, max_iter, sample, constr_type, radius, objective,
 
 
 if __name__ == '__main__':
-
-
     dim = 100
     max_iter = 200000
     sample = 30
