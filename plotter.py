@@ -19,7 +19,7 @@ def plot_results(max_iter, dim, constr_type,
     colours = sns.color_palette('colorblind')
 
     labels = {
-    'Our' : r'\Large $\ell_1$-randomization (Our)',
+    'Our' : r'\Large $\ell_1$-randomization',
     'Spherical' : r'\Large $\ell_2$-randomization',
     }
 

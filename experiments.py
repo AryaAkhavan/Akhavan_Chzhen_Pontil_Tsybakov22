@@ -116,8 +116,8 @@ if __name__ == '__main__':
 
 
     dim = 100
-    max_iter = 30
-    sample = 3
+    max_iter = 200000
+    sample = 30
     constr_type = 'simplex'
     radius = np.log(dim)**(1/2) if constr_type=='simplex' else 1
     objective = SumFuncL1Test(dim=dim)

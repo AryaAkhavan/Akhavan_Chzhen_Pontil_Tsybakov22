@@ -41,7 +41,7 @@ class ZeroOrderL1(Oracle):
         # return self.radius / np.sqrt(t)
         bqd_inv = self.dim + 1
         if self.norm_lipsch < np.log(self.dim):
-            bqd_inv /= self.norm_lipsch * self.dim ** (1 / self.norm_lipsch)
+            bqd_inv /= self.norm_lipsch * self.dim ** (3 / self.norm_lipsch)
         else:
             bqd_inv /= np.exp(1) * np.log(self.dim)
         if not noisy:

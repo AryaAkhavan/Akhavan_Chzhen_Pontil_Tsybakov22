@@ -75,7 +75,7 @@ class BlackBox:
     def set_step_size(self, radius, grad_norm_sum):
         if grad_norm_sum == 0:
             return 1
-        return min(1, radius / np.sqrt(grad_norm_sum))
+        return radius / ((2.75**(0.5))*np.sqrt(grad_norm_sum))
 
 
     def optimize(self, max_iter,
@@ -104,15 +104,16 @@ class BlackBox:
         cumul_grad = np.zeros(dim)
         report = []
         x_final_unnormalized = np.zeros(dim)
+        eta = 1
         for t in range(max_iter):
             if (t+1) % self.MESSAGE_PER_N == 0:
                 print(f"[{self.estimator:b}] {100 * (t+1) / max_iter:.0f}% optimizing...")
-            x_new = mirror_projection(cumul_grad, constr_type)
+            x_new = mirror_projection(eta*cumul_grad, constr_type)
             x_final_unnormalized += x_new
             report.append(self.eval(x_final_unnormalized/(t+1), t+1, True))
             grad, norm_dual = self.estimator.estimate(x_new, t+1,
                                                       self.eval, self.noisy)
             grad_norm_sum += norm_dual
             eta = self.set_step_size(radius, grad_norm_sum)
-            cumul_grad -= eta * grad
+            cumul_grad -= grad
         return report
