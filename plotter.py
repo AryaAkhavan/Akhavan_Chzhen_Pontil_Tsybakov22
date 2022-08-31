@@ -16,7 +16,7 @@ def plot_results(max_iter, dim, constr_type,
     multiplier = 50
 
     jump = jump_default if multiplier * max_iter > jump_default else 1
-    colours = sns.color_palette('colorblind')
+    colours = [sns.color_palette('colorblind')[0], sns.color_palette('colorblind')[3]]
 
     labels = {
     'Our' : r'\Large $\ell_1$-randomization',
@@ -32,17 +32,24 @@ def plot_results(max_iter, dim, constr_type,
     plt.figure(figsize=(7,3))
     for idx, (method_name, result) in enumerate(results.items()):
 
+
         error = np.array(result) - objective_min
         std = np.array(error).std(0)
         mean = np.average(error, axis=0)
 
+        for j in range(error.shape[0]):
+             plt.plot(grid[0::jump], error[j, :][0::jump], color=colours[idx], alpha=0.35, linewidth=.5)
 
 
+        # plt.plot(grid[0::jump], np.array(mean)[0::jump], color='black',
+        #          label=labels[method_name],
+        #          linewidth=0.5)
         plt.plot(grid[0::jump], np.array(mean)[0::jump], color=colours[idx],
-                 label=labels[method_name], linestyle=lines[method_name])
-        plt.fill_between(grid[0::jump], mean[0::jump]-std[0::jump],
-                         mean[0::jump]+std[0::jump],
-                         facecolor=colours[idx], alpha=0.3)
+                 label=labels[method_name], linestyle=lines[method_name],
+                 linewidth=1.5)
+        # plt.fill_between(grid[0::jump], mean[0::jump]-std[0::jump],
+        #                  mean[0::jump]+std[0::jump],
+        #                  facecolor=colours[idx], alpha=0.3)
 
 
     plt.xlabel(r'\Large Number of iterations')
