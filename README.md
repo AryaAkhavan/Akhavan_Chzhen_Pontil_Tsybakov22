@@ -40,3 +40,12 @@ All parameters can be initialized in **experimetns.py**:
    2. ''Bernoulli': If the noise is a Bernoulli random variable
 
 
+# Bibentry
+```bib
+@article{Akhavan_Chzhen_Pontil_Tsybakov22,
+      title={A gradient estimator via L1-randomization for online zero-order optimization with two point feedback}, 
+      author={A. Akhavan and E. Chzhen and M. Pontil and A. Tsybakov},
+      year={2022},
+      journal={NeurIPS22}
+}
+
